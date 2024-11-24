@@ -7,11 +7,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+    <div class="container">
     <a href="{% url 'ecomapp:home' %}">Home</a>
     <a href="{% url 'ecomapp:about' %}">About</a>
     <a href="{% url 'ecomapp:contact' %}">Contact</a>
     <a href="{% url 'ecomapp:allproducts' %}">Categories</a>
+    <a href="{% url 'ecomapp:mycart' %}">View Cart</a>
+    </div>
     <hr>
+    
 
     {% block content %}
 
