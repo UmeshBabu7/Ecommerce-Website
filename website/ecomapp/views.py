@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
-from django.views.generic import TemplateView,View,CreateView
+from django.views.generic import TemplateView,View,CreateView,FormView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
+from django.contrib.auth import authenticate,login,logout
 
 # Create your views here.
 
@@ -165,6 +166,51 @@ class CheckoutView(CreateView):
         return super().form_valid(form)
         
 
+class CustomerRegistrationView(CreateView):
+    template_name = "customerregistration.html"
+    form_class = CustomerRegistrationForm
+    success_url = reverse_lazy("ecomapp:home")
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password")
+        email = form.cleaned_data.get("email")
+        user = User.objects.create_user(username, email, password)
+        form.instance.user = user
+        login(self.request, user)
+        return super().form_valid(form)
+
+
+
+class CustomerLogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect("ecomapp:home")
+
+    
+class CustomerLoginView(FormView):
+    template_name = "customerlogin.html"
+    form_class = CustomerLoginForm
+    success_url = reverse_lazy("ecomapp:home")
+
+    # form_valid method is a type of post method and is available in createview formview and updateview
+    def form_valid(self, form):
+        uname = form.cleaned_data.get("username")
+        pword = form.cleaned_data["password"]
+        usr = authenticate(username=uname, password=pword)
+        if usr is not None and usr.customer:
+            login(self.request, usr)
+        else:
+            return render(self.request, self.template_name, {"form": self.form_class, "error": "Invalid credentials"})
+
+        return super().form_valid(form)
+
+
+
+
+    
+
+    
 
 
 
