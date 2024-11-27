@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.views.generic import TemplateView,View,CreateView,FormView
+from django.views.generic import TemplateView,View,CreateView,FormView,DetailView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -238,6 +238,45 @@ class CustomerLoginView(FormView):
             return next_url
         else:
             return self.success_url
+        
+class CustomerProfileView(TemplateView):
+    template_name = "customerprofile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+            return redirect('/login/?next=/profile/')
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        customer=self.request.user.customer
+        context['customer']=customer
+        orders=Order.objects.filter(cart__customer=customer).order_by('-id')
+        context['orders']=orders
+        return context
+    
+class  CustomerOrderDetailView(DetailView):
+    template_name='customerorderdetail.html'
+    model=Order
+    context_object_name='ord_obj'
+
+# id ma arko customer dekhaune
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and Customer.objects.filter(user=request.user).exists():
+            order_id = self.kwargs["pk"]
+            order = Order.objects.get(id=order_id)
+            if request.user.customer != order.cart.customer:
+                return redirect("ecomapp:customerprofile")
+        else:
+            return redirect("/login/?next=/profile/")
+        return super().dispatch(request, *args, **kwargs)
+
+
+        
+
+
 
  
 class AboutView(EcomMixin,TemplateView):
