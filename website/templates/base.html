@@ -24,6 +24,16 @@
     {% endif %}
     </div>
     <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <form action="{% url 'ecomapp:search' %}" method="GET">
+                    <input type="text" name="keyword" placeholder="Search product here..." required>
+                    <button>Search product </button>
+                </form>
+            </div>
+        </div>
+    </div>
     
 
     {% block content %}

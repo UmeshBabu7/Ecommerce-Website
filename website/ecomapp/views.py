@@ -4,6 +4,7 @@ from .models import *
 from .forms import *
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate,login,logout
+from django.db.models import Q
 
 # Create your views here.
 
@@ -27,6 +28,7 @@ class HomeView(EcomMixin,TemplateView):
         context['product_list']=Product.objects.all().order_by('-id')
         return context 
     
+
 class AllProductsView(EcomMixin,TemplateView):
     template_name="allproducts.html"
 
@@ -34,6 +36,7 @@ class AllProductsView(EcomMixin,TemplateView):
         context=super().get_context_data(**kwargs)
         context['allcategories']=Category.objects.all()
         return context
+
 
 class ProductDetailView(EcomMixin,TemplateView):
     template_name="productdetail.html"
@@ -272,9 +275,27 @@ class  CustomerOrderDetailView(DetailView):
         else:
             return redirect("/login/?next=/profile/")
         return super().dispatch(request, *args, **kwargs)
+    
+class SearchView(TemplateView):
+    template_name='search.html'
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        kw=self.request.GET.get('keyword')
+
+        # yesma case sensitive(apple,Apple huna sakdaina)
+        # results=Product.objects.filter(title__contains=kw)
+         # yesma case sensitive(apple,Apple huna sakxa)
+        # results=Product.objects.filter(title__icontains=kw)
+
+        # for complex searching query
+        results = Product.objects.filter(
+            Q(title__icontains=kw) | Q(description__icontains=kw) | Q(return_policy__icontains=kw))
+        context['results']=results
+        return context
 
 
-
+# Admin pages
 class AdminLoginView(FormView):
     template_name = "adminpages/adminlogin.html"
     form_class = CustomerLoginForm
@@ -291,8 +312,6 @@ class AdminLoginView(FormView):
         return super().form_valid(form)
     
 
-
-# Admin pages
 class AdminRequiredMixin(object):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and Admin.objects.filter(user=request.user).exists():
@@ -332,7 +351,6 @@ class AdminOrderListView(AdminRequiredMixin, ListView):
     queryset = Order.objects.all().order_by("-id")
     context_object_name = "allorders"
 
-    
 
 class AdminOrderStatuChangeView(AdminRequiredMixin, View):
     def post(self, request, *args, **kwargs):
