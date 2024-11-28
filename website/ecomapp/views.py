@@ -5,6 +5,7 @@ from .forms import *
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate,login,logout
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -25,7 +26,12 @@ class HomeView(EcomMixin,TemplateView):
     def get_context_data(self,**kwargs):
         context=super().get_context_data(**kwargs)
         context['meroname']="Umesh Tamang "
-        context['product_list']=Product.objects.all().order_by('-id')
+        all_products=Product.objects.all().order_by('id')
+        paginator=Paginator(all_products,8)
+        page_number=self.request.GET.get('page')
+        print(page_number)
+        product_list=paginator.get_page(page_number)
+        context['product_list']=product_list
         return context 
     
 

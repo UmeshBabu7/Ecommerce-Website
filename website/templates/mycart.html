@@ -33,13 +33,17 @@
                         </td>
                     </tr>
                     {% endfor %}
+
                     <tr>
-                        <th colspan="4" class="text-right">Total</th>
-                        <th>Rs. {{cart.total}}</th>
+                        <th colspan="4" class="text-right"></th>
+                        <th>Total=  Rs. {{cart.total}}</th>
                         {% if cart.cartproduct_set.all %}
                         <th><a href="{% url 'ecomapp:emptycart' %}">Empty Cart</a></th>
                         {% endif %} 
                     </tr>
+
+
+
                     {% if cart.cartproduct_set.all %}
                     <tr>
                         <th><a class="btn btn-info" href="{% url 'ecomapp:checkout'%}">checkout</a></th>
