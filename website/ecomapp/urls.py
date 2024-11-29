@@ -21,7 +21,10 @@ urlpatterns = [
     path("profile/", CustomerProfileView.as_view(), name="customerprofile"),
     path("profile/order-<int:pk>/", CustomerOrderDetailView.as_view(),
          name="customerorderdetail"), 
-     path("search/", SearchView.as_view(), name="search"),
+    path("search/", SearchView.as_view(), name="search"),
+     # payment method using khalti
+    path("khalti-request/", KhaltiRequestView.as_view(), name="khaltirequest"),
+
 
 # adminpages
     path("admin-login/", AdminLoginView.as_view(), name="adminlogin"),
