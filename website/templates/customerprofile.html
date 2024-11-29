@@ -1,43 +1,73 @@
 {% extends "base.html" %}
 
-{% block title %}My Profile {% endblock %}
+{% block title %}My Profile{% endblock %}
 
 {% block content %}
-<div class="container">
+<style>
+    .profile-section {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+    .profile-info p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    .profile-info .font-weight-bold {
+        font-size: 1.1rem;
+    }
+    .table thead {
+        background-color: #f8f9fa;
+    }
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+
+<div class="container mt-5">
     <div class="row">
         <div class="col-md-4">
-            <h3>Detail Information</h3><hr>
-            <p><span class="font-weight-bold">Name:</span>{{customer.full_name}}</p>
-            <p><span class="font-weight-bold">Username:</span>{{customer.user.username}}</p>
-            <p><span class="font-weight-bold">Email:</span>{{customer.user.email}}</p>
-            <p><span class="font-weight-bold">Address:</span>{{customer.address}}</p>
-            <p><span class="font-weight-bold">Joined on:</span>{{customer.joined_on}}</p>
+            <div class="profile-section">
+                <h3 class="text-info">Detail Information</h3>
+                <hr>
+                <div class="profile-info">
+                    <p><span class="font-weight-bold">Name:</span> {{customer.full_name}}</p>
+                    <p><span class="font-weight-bold">Username:</span> {{customer.user.username}}</p>
+                    <p><span class="font-weight-bold">Email:</span> {{customer.user.email}}</p>
+                    <p><span class="font-weight-bold">Address:</span> {{customer.address}}</p>
+                    <p><span class="font-weight-bold">Joined on:</span> {{customer.joined_on}}</p>
+                </div>
+            </div>
         </div>
         <div class="col-md-8">
-            <h3>Previous Orders </h3>
-            <hr>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>SN</th>
-                        <th>Order Id</th>
-                        <th>Amount</th>
-                        <th>Ordered on </th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for ord in orders %}
-                    <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td><a href="{% url 'ecomapp:customerorderdetail' ord.pk  %}">#ORDER_{{ord.id}}</a></td>
-                        <td>{{ord.total}}</td>
-                        <td>{{ord.created_at|timesince}} ago</td>
-                        <td>{{ord.order_status}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="profile-section">
+                <h3 class="text-info">Previous Orders</h3>
+                <hr>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Order Id</th>
+                            <th>Amount</th>
+                            <th>Ordered on</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ord in orders %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="{% url 'ecomapp:customerorderdetail' ord.pk  %}">#ORDER_{{ord.id}}</a></td>
+                            <td>Rs. {{ord.total}}</td>
+                            <td>{{ord.created_at|timesince}} ago</td>
+                            <td>{{ord.order_status}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

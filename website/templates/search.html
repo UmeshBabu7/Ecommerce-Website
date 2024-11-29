@@ -1,26 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %}Search {% endblock %}
+{% block title %} Search Results {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="col-md-12">
-            <h3>Search Results for <span class="text-info">"{{request.GET.keyword}}"</span></h3>
+            <h3 class="text-center text-primary">Search Results for <span class="text-info">"{{ request.GET.keyword }}"</span></h3>
             <hr>
-            {% for result in results %}
-            <div class="row">
-                <div class="col-md-3">
-                    <img src="{{result.image.url}}" class="img-fluid" alt="">
+
+            {% if results %}
+                {% for result in results %}
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <img src="{{ result.image.url }}" class="img-fluid" alt="{{ result.title }}" style="height: 200px; object-fit: cover;">
+                    </div>
+                    <div class="col-md-9">
+                        <h4><a href="{% url 'ecomapp:productdetail' result.slug %}" class="text-dark">{{ result.title }}</a></h4>
+                        <p>{{ result.description|truncatewords:50 }}</p>
+                        <p><strong>Return Policy:</strong> {{ result.return_policy }}</p>
+                        <a href="{% url 'ecomapp:addtocart' result.id %}" class="btn btn-secondary">Add to Cart</a>
+                    </div>
                 </div>
-                <div class="col-md-9">
-                    <h4><a href="{% url 'ecomapp:productdetail' result.slug %}">{{result.title}}</a></h4>
-                    <p>{{result.description|truncatewords:50}}</p>
-                    <p>Return Policy: {{result.return_policy}}</p>
-                    <a href="{% url 'ecomapp:addtocart' result.id %}" class="btn btn-primary">Add To Cart</a>
-                </div>
-            </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-warning">No results found for "{{ request.GET.keyword }}". Please try again with a different search term.</p>
+            {% endif %}
         </div>
     </div>
 </div>

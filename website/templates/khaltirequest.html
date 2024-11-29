@@ -1,61 +1,77 @@
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
     <script src="https://unpkg.com/khalti-checkout-web@latest/dist/khalti-checkout.iffe.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h3>Your order amount is Rs. {{order.total}}</h3>
-    
-    <button id="payment-button">Pay with Khalti</button>
-    <a href="/">Go to Home page</a>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <h3 class="mb-4">Your order amount is Rs. {{order.total}}</h3>
 
+                <!-- Payment Button -->
+                <button id="payment-button" class="btn btn-secondary btn-lg">Pay with Khalti</button>
+                
+                <!-- Link to Home Page -->
+                <div class="mt-4">
+                    <a href="/" class="btn btn-info">Go to Home page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Including Axios for API calls -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         var config = {
-            //publicKey
+            // Public Key for Khalti Payment
             "publicKey": "test_public_key_1d794c857ecc4f91bb34c86514b29a4e",
             "productIdentity": "order_{{order.id}}",
             "productName": "order_{{order.id}}",
-            "productUrl": "http://localhost:8000",
+            "productUrl": "http://localhost:8000", 
             "paymentPreference": [
                 "MOBILE_BANKING",
                 "KHALTI",
                 "EBANKING",
                 "CONNECT_IPS",
                 "SCT",
-                ],
+            ],
             "eventHandler": {
                 onSuccess (payload) {
-                    // hit merchant api for initiating verfication
+                    // Merchant API call for verification after successful payment
                     axios.get("/khalti-verify/", {
                         params: {
                             "token": payload.token,
                             "amount": payload.amount,
                             "order_id": "{{order.id}}"
                         }
-                    }).then(function(resp){
-                        if (resp.data.success == true){
-                            alert("Thanks. Payment Completed Successfully")
-                            location.href = "/"
-                        }else{
-                            alert("Sorry. Error occurred")
-                            location.href = "{{request.build_absolute_uri}}"
+                    }).then(function(resp) {
+                        if (resp.data.success === true) {
+                            alert("Thanks! Payment Completed Successfully.");
+                            location.href = "/";
+                        } else {
+                            alert("Sorry! An error occurred.");
+                            location.href = "{{request.build_absolute_uri}}";
                         }
-                    })
+                    });
                 },
                 onError (error) {
-                    console.log(error);
+                    console.error(error);
                 },
                 onClose () {
-                    console.log('widget is closing');
+                    console.log('Khalti widget is closing');
                 }
             }
         };
 
         var checkout = new KhaltiCheckout(config);
         var btn = document.getElementById("payment-button");
-        btn.onclick = function () {
-            // minimum transaction amount must be 10, i.e 1000 in paisa.
-            checkout.show({amount: {{order.total}}*100});
+        btn.onclick = function() {
+            // Transaction amount in paisa (1 Rs = 100 paisa)
+            checkout.show({ amount: {{order.total}} * 100 });
         }
     </script>
 </body>
