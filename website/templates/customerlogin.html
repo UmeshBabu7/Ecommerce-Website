@@ -100,7 +100,8 @@
             </form>
         </div>
         <div class="card-footer">
-            <p class="text-center mt-3 footer-text">Don't have an account? 
+            <p class="text-center mt-3 footer-text">Forgot Password?<a href="{% url 'ecomapp:passworforgot' %}">Reset now.</a></p>
+            <p class="text-center mt-3 footer-text">Or, don't have an account? 
                 <a href="{% url 'ecomapp:customerregistration' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" class="register-link">
                     Register here
                 </a>

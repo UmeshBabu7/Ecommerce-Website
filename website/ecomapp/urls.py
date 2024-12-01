@@ -23,6 +23,12 @@ urlpatterns = [
     path("search/", SearchView.as_view(), name="search"),
      # payment method (khalti)
      path("khalti-request/", KhaltiRequestView.as_view(), name="khaltirequest"),
+     # reset password
+    path("forgot-password/", PasswordForgotView.as_view(), name="passworforgot"),
+     path("password-reset/<email>/<token>/",
+         PasswordResetView.as_view(), name="passwordreset"),
+
+
 
 
 # adminpages
