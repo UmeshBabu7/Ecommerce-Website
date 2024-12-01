@@ -423,11 +423,34 @@ class AdminOrderStatuChangeView(AdminRequiredMixin, View):
         return redirect(reverse_lazy("ecomapp:adminorderdetail", kwargs={"pk": order_id}))
     
 
-class AboutView(EcomMixin,TemplateView):
-    template_name="about.html"
+class AdminProductListView(AdminRequiredMixin, ListView):
+    template_name = "adminpages/adminproductlist.html"
+    queryset = Product.objects.all().order_by("-id")
+    context_object_name = "allproducts"
 
-class ContactView(EcomMixin,TemplateView):
-    template_name="contact.html"
+
+
+class AdminProductCreateView(AdminRequiredMixin, CreateView):
+    template_name = "adminpages/adminproductcreate.html"
+    form_class = ProductForm
+    success_url = reverse_lazy("ecomapp:adminproductlist")
+
+
+class AdminProductCreateView(AdminRequiredMixin, CreateView):
+    template_name = "adminpages/adminproductcreate.html"
+    form_class = ProductForm
+    success_url = reverse_lazy("ecomapp:adminproductlist")
+
+    def form_valid(self, form):
+        p = form.save()
+        images = self.request.FILES.getlist("more_images")
+        for i in images:
+            ProductImage.objects.create(product=p, image=i)
+        return super().form_valid(form)
+
+
+
+
 
 
     

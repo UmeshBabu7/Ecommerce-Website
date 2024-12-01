@@ -4,9 +4,8 @@ from .views import *
 app_name='ecomapp'
 
 urlpatterns = [
+     # client side pages
     path('',HomeView.as_view(),name="home"),
-    path('about/',AboutView.as_view(),name="about"),
-    path('contact/',ContactView.as_view(),name="contact"),
     path("all-products/", AllProductsView.as_view(), name="allproducts"),
     path("product/<slug:slug>/", ProductDetailView.as_view(), name="productdetail"),
     path("add-to-cart-<int:pro_id>/", AddToCartView.as_view(), name="addtocart"),
@@ -22,8 +21,8 @@ urlpatterns = [
     path("profile/order-<int:pk>/", CustomerOrderDetailView.as_view(),
          name="customerorderdetail"), 
     path("search/", SearchView.as_view(), name="search"),
-     # payment method using khalti
-    path("khalti-request/", KhaltiRequestView.as_view(), name="khaltirequest"),
+     # payment method (khalti)
+     path("khalti-request/", KhaltiRequestView.as_view(), name="khaltirequest"),
 
 
 # adminpages
@@ -34,6 +33,13 @@ urlpatterns = [
     path("admin-all-orders/", AdminOrderListView.as_view(), name="adminorderlist"),
     path("admin-order-<int:pk>-change/",
          AdminOrderStatuChangeView.as_view(), name="adminorderstatuschange"),
+     path("admin-product/list/", AdminProductListView.as_view(),
+         name="adminproductlist"),
+     # for admin product create form 
+     path("admin-product/add/", AdminProductCreateView.as_view(),
+         name="adminproductcreate"),
+
+
 
 
 
