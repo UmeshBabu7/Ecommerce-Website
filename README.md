@@ -26,7 +26,7 @@ Step 3: Install dependencies
     
     or 
     
-    $ pip install django pillow requests six
+    $ pip install django pillow requests 
 
 Step 4: Apply the migration if any
 
