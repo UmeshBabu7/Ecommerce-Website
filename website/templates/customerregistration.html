@@ -1,116 +1,73 @@
-{% extends "base.html" %}
-
-{% block title %}Customer Registration{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Register - MiniMart{% endblock %}
 
 {% block content %}
-<style>
-    body {
-        background-color: #f4f7fc;
-    }
-    .errorlist {
-        color: red;
-        font-size: 0.9rem;
-    }
-    .form-container {
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        background-color: white;
-    }
-    h3 {
-        text-align: center;
-        margin-bottom: 30px;
-        font-size: 1.8rem;
-        color: #1f7ed6;
-    }
-    .card {
-        border: none;
-        border-radius: 15px;
-        overflow: hidden;
-    }
-    .card-body {
-        padding: 20px;
-    }
-    .form-group {
-        margin-bottom: 20px;
-    }
-    .form-control {
-        height: 45px;
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        padding: 10px;
-        font-size: 1rem;
-    }
-    .btn {
-        border-radius: 30px;
-        padding: 10px;
-        font-size: 1.1rem;
-        text-transform: uppercase;
-        width: 100%;
-    }
-    .btn-primary {
-        background-color: #1f7ed6;
-        border: none;
-        color: white;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    }
-    .btn-primary:hover {
-        background-color: #155a8a;
-    }
-    .register-link {
-        color: #1f7ed6;
-        font-size: 1rem;
-    }
-    .register-link:hover {
-        text-decoration: underline;
-    }
-    .footer-text {
-        font-size: 0.9rem;
-        text-align: center;
-        margin-top: 20px;
-        color: #888;
-    }
-
-    /* Centering and responsive width */
-    .form-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    .form-card {
-        width: 100%;
-        max-width: 500px; /* Set max width for better control */
-    }
-</style>
-
-<div class="container-fluid form-wrapper">
-    <div class="card form-card">
-        <div class="card-body">
-            <h3 class="text-center text-info">Customer Registration Form</h3>
-
-            <form action="" method="POST">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    {{ form.as_p }}
+<!-- Register Hero Section -->
+<div class="container-fluid px-0">
+    <div class="position-relative">
+        <div class="bg-primary text-white py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <h1 class="display-4 fw-bold mb-4">Create Account</h1>
+                        <p class="lead mb-4">Join MiniMart and start your shopping journey</p>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn btn-secondary mt-4">Register as a customer</button>
-            </form>
-
-            <hr>
-
-            <p class="text-center mt-3 footer-text">
-                Already have an account? 
-                <a href="{% url 'ecomapp:customerlogin' %}" class="register-link">
-                    Login here
-                </a>
-            </p>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Registration Form Section -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <h3 class="card-title text-center mb-4">Register Your Account</h3>
+                    
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            {% for field in form %}
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ field.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </button>
+                        </div>
+
+                        {% if error %}
+                        <div class="alert alert-danger mt-3">
+                            {{ error }}
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+                <div class="card-footer bg-light p-4">
+                    <div class="text-center">
+                        <p class="mb-0">Already have an account? 
+                            <a href="{% url 'ecomapp:customerlogin' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" class="text-primary">
+                                Login here
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 

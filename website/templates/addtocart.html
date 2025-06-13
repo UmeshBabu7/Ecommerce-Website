@@ -1,18 +1,41 @@
 {% extends 'base.html' %}
-{% block title %}Add to Cart{% endblock %}
+{% block title %}Add to Cart - MiniMart{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<!-- Add to Cart Hero Section -->
+<div class="container-fluid px-0">
+    <div class="position-relative">
+        <div class="bg-primary text-white py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <h1>Added to Cart</h1>
+                        <p class="lead mb-4">Your item has been successfully added to your cart</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Message Section -->
+<div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="alert alert-success text-center" role="alert">
-                <h4 class="alert-heading">Success!</h4>
-                <p>Your product has been added to the cart successfully.</p>
-                <hr>
-                <p class="mb-0">
-                    You can <a href="{% url 'ecomapp:mycart' %}" class="btn btn-secondary">View your cart</a> or 
-                    <a href="{% url 'ecomapp:home' %}" class="btn btn-secondary">Continue Shopping</a>.
-                </p>
+            <div class="card shadow-sm text-center">
+                <div class="card-body p-5">
+                    <i class="fas fa-check-circle text-success fa-4x mb-4"></i>
+                    <h3 class="card-title mb-4">Success!</h3>
+                    <p class="card-text mb-4">Your product has been added to the cart successfully.</p>
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'ecomapp:mycart' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-shopping-cart me-2"></i>View Your Cart
+                        </a>
+                        <a href="{% url 'ecomapp:allproducts' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

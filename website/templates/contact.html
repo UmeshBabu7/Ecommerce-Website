@@ -1,13 +1,122 @@
 {% extends 'base.html' %}
-
-{% block title %}Contact{% endblock %}
+{% block title %}Contact Us - MiniMart{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center">Contact Me</h1>
-    <p class="text-center">You can reach me at:</p>
-    <p class="text-center">
-        <a href="tel:+9779818110430" class="btn btn-info">Call: 9818110430</a>
-    </p>
+<!-- Contact Hero Section -->
+<div class="container-fluid px-0">
+    <div class="position-relative">
+        <div class="bg-primary text-white py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h1 class="display-4 fw-bold mb-4">Contact Us</h1>
+                        <p class="lead mb-4">We'd love to hear from you. Get in touch with us for any questions or concerns.</p>
+                    </div>
+                    <div class="col-md-6">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Contact Information Section -->
+<div class="container my-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-map-marker-alt fa-3x text-primary mb-3"></i>
+                    <h4>Our Location</h4>
+                    <p class="text-muted">123 Shopping Street<br>Suryabinayak, Bhaktapur, Nepal</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-phone fa-3x text-primary mb-3"></i>
+                    <h4>Phone Number</h4>
+                    <p class="text-muted">+977 1234567890<br>+977 9876543210</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-envelope fa-3x text-primary mb-3"></i>
+                    <h4>Email Address</h4>
+                    <p class="text-muted">info@minimart.com<br>support@minimart.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Form Section -->
+<div class="container-fluid bg-light py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">Send us a Message</h2>
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name" class="form-label">Your Name</label>
+                                        <input type="text" class="form-control" id="name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="subject" class="form-label">Subject</label>
+                                        <input type="text" class="form-control" id="subject" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="message" class="form-label">Message</label>
+                                        <textarea class="form-control" id="message" rows="5" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %} <!-- Map Section -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-0">
+                    {% comment %} <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.464315696536!2d85.31727761509466!3d27.709240982784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1907b05d4f6f%3A0x60456a3a5b428d3c!2sKathmandu%2C%20Nepal!5e0!3m2!1sen!2s!4v1647881234567!5m2!1sen!2s"  {% endcomment %}
+                    {% comment %} <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.3043381787053!2d85.43218027516947!3d27.67691812722064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1bdb3d6c5f75%3A0xd98c158dbb85f420!2sSuryabinayak%2C%20Bhaktapur!5e0!3m2!1sen!2snp!4v1718275800000!5m2!1sen!2snp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                            width="100%" 
+                            height="450" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %} 
 {% endblock %}

@@ -4,41 +4,93 @@
 {% load humanize %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-info">All Orders</h3><hr>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>SN</th>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Ordered On</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in allorders %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td><a href="{% url 'ecomapp:adminorderdetail' order.id %}">#ORDER_{{ order.id }}</a></td>
-                        <td>{{ order.ordered_by }}</td>
-                        <td>{{ order.created_at|timesince }} ago</td>
-                        <td>Rs. {{ order.total|intcomma }}</td>
-                        <td>{{ order.order_status }}</td>
-                        <td>
-                            <a href="{% url 'ecomapp:adminorderdetail' order.id %}" class="btn btn-info btn-sm">View</a> 
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<!-- Orders Hero Section -->
+<div class="container-fluid px-0">
+    <div class="position-relative">
+        <div class="bg-primary text-white py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <h1 class="display-4 fw-bold mb-4">All Orders</h1>
+                        <p class="lead mb-4">View and manage all customer orders</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Orders List Section -->
+<div class="container my-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>SN</th>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Ordered On</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in allorders %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <span class="badge bg-primary">#ORDER_{{ order.id }}</span>
+                            </td>
+                            <td>{{ order.ordered_by }}</td>
+                            <td>{{ order.created_at|timesince }} ago</td>
+                            <td>Rs. {{ order.total|intcomma }}</td>
+                            <td>
+                                {% if order.order_status == "Order Received" %}
+                                    <span class="badge bg-info">{{ order.order_status }}</span>
+                                {% elif order.order_status == "Order Processing" %}
+                                    <span class="badge bg-warning">{{ order.order_status }}</span>
+                                {% elif order.order_status == "On the way" %}
+                                    <span class="badge bg-primary">{{ order.order_status }}</span>
+                                {% elif order.order_status == "Order Completed" %}
+                                    <span class="badge bg-success">{{ order.order_status }}</span>
+                                {% else %}
+                                    <span class="badge bg-danger">{{ order.order_status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'ecomapp:adminorderdetail' order.id %}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-eye me-1"></i>View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .table th {
+        font-weight: 600;
+        background-color: #f8f9fa;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    .badge {
+        font-size: 0.875rem;
+        padding: 0.5em 1em;
+    }
+</style>
+{% endblock %}
 {% endblock %}
 
 

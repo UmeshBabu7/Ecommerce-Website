@@ -31,7 +31,9 @@
                 <small><strike>Rs. {{ product.marked_price }}</strike></small>
                 <strong>Rs. {{ product.selling_price }}</strong>
             </h5>
-            <a href="{% url 'ecomapp:addtocart' product.id %}" class="btn btn-secondary mt-3">Add to Cart</a>
+             <a href="{% url 'ecomapp:addtocart' product.id %}" class="btn btn-primary">
+                            <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                        </a>
             
             <hr class="mt-4">
             

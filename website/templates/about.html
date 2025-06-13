@@ -1,11 +1,38 @@
 {% extends 'base.html' %}
 
-{% block title %}About{% endblock %}
+{% block title %}About Us - MiniMart{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center">About</h1>
-    <hr>
-    <p class="text-center">Thank you for visiting!</p>
+<!-- About Hero Section -->
+<div class="container-fluid px-0">
+    <div class="position-relative">
+        <div class="bg-primary text-white py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <h1 class="display-4 fw-bold mb-4">About MiniMart</h1>
+                        <p class="lead mb-4">Your trusted shopping destination for quality products and exceptional service.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Section -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h2 class="mb-4">Welcome to MiniMart</h2>
+            <p class="lead mb-4">We are committed to providing our customers with the best shopping experience possible.</p>
+            <p class="mb-4">At MiniMart, we believe in:</p>
+            <ul class="list-unstyled">
+                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i>Quality Products</li>
+                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i>Competitive Prices</li>
+                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i>Excellent Service</li>
+                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i>Fast Delivery</li>
+            </ul>
+        </div>
+    </div>
 </div>
 {% endblock %}

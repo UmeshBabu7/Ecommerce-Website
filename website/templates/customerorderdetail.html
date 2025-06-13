@@ -1,55 +1,107 @@
-{% extends "base.html" %}
-{% load humanize %}
-
-{% block title %}Order Detail{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Order Details - MiniMart{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-8 mx-auto">
-            <h3 class="text-center text-info">Order Detail</h3>
-            <hr>
-
-            <p><span class="font-weight-bold">Order ID:</span> #ORDER_{{ ord_obj.id }}</p>
-            <p><span class="font-weight-bold">Order Status:</span> {{ ord_obj.order_status }}</p>
-            <p><span class="font-weight-bold">Order On:</span> {{ ord_obj.created_at|timesince }} ago</p>
-            <p><span class="font-weight-bold">Customer Information:</span> By {{ ord_obj.ordered_by }}, {{ ord_obj.mobile }}</p>
-            <p><span class="font-weight-bold">Shipping Address:</span> {{ ord_obj.shipping_address }} ({{ ord_obj.email }})</p>
-
-            <h4 class="mt-4 text-info">Ordered Items</h4>
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>SN</th>
-                        <th>Item</th>
-                        <th>Rate</th>
-                        <th>Quantity</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for cp in ord_obj.cart.cartproduct_set.all %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>
-                            <a target="_blank" href="{% url 'ecomapp:productdetail' cp.product.slug %}">
-                                {{ cp.product.title }} ({{ cp.product.id }})
-                            </a>
-                        </td>
-                        <td>Rs. {{ cp.rate }}</td>
-                        <td>{{ cp.quantity }}</td>
-                        <td>Rs. {{ cp.subtotal }}</td>
-                    </tr>
-                    {% endfor %}
-                    <tr>
-                        <th colspan="4" class="text-right">Total</th>
-                        <th>Rs. {{ ord_obj.total|intcomma }}</th>
-                    </tr>
-                </tbody>
-            </table>
-
+<!-- Order Detail Hero Section -->
+<div class="container-fluid px-0">
+    <div class="position-relative">
+        <div class="bg-primary text-white py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <h1 class="display-4 fw-bold mb-4">Order Details</h1>
+                        <p class="lead mb-4">Order #{{ ord_obj.id }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Order Information -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Order Information</h3>
+                    <p><strong>Order ID:</strong> #{{ ord_obj.id }}</p>
+                    <p><strong>Order Date:</strong> {{ ord_obj.created_at|date:"F d, Y" }}</p>
+                    <p><strong>Order Status:</strong> 
+                        <span class="badge {% if ord_obj.order_status == 'Order Received' %}bg-primary{% elif ord_obj.order_status == 'Order Processing' %}bg-info{% elif ord_obj.order_status == 'Order Completed' %}bg-success{% else %}bg-secondary{% endif %}">
+                            {{ ord_obj.order_status }}
+                        </span>
+                    </p>
+                    <p><strong>Payment Method:</strong> {{ ord_obj.payment_method }}</p>
+                    <p><strong>Payment Status:</strong> 
+                        <span class="badge {% if ord_obj.payment_completed %}bg-success{% else %}bg-warning{% endif %}">
+                            {% if ord_obj.payment_completed %}Paid{% else %}Pending{% endif %}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Shipping Information</h3>
+                    <p><strong>Full Name:</strong> {{ ord_obj.full_name }}</p>
+                    <p><strong>Email:</strong> {{ ord_obj.email }}</p>
+                    <p><strong>Mobile:</strong> {{ ord_obj.mobile }}</p>
+                    <p><strong>Address:</strong> {{ ord_obj.address }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Items -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title mb-4">Order Items</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cp in ord_obj.cart.cartproduct_set.all %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ cp.product.image.url }}" alt="{{ cp.product.title }}" style="width: 50px; height: 50px; object-fit: cover;" class="me-3">
+                                    <div>
+                                        <h6 class="mb-0">{{ cp.product.title }}</h6>
+                                        <small class="text-muted">{{ cp.product.description|truncatewords:10 }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Rs. {{ cp.rate }}</td>
+                            <td>{{ cp.quantity }}</td>
+                            <td>Rs. {{ cp.subtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                            <td><strong>Rs. {{ ord_obj.total }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-4">
+        <a href="{% url 'ecomapp:customerprofile' %}" class="btn btn-primary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Profile
+        </a>
+    </div>
+</div>
 {% endblock %}

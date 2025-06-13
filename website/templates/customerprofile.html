@@ -1,75 +1,79 @@
-{% extends "base.html" %}
-
-{% block title %}My Profile{% endblock %}
+{% extends 'base.html' %}
+{% block title %}My Profile - MiniMart{% endblock %}
 
 {% block content %}
-<style>
-    .profile-section {
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-    }
-    .profile-info p {
-        font-size: 1.1rem;
-        line-height: 1.6;
-    }
-    .profile-info .font-weight-bold {
-        font-size: 1.1rem;
-    }
-    .table thead {
-        background-color: #f8f9fa;
-    }
-    .table tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-</style>
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="profile-section">
-                <h3 class="text-info">Detail Information</h3>
-                <hr>
-                <div class="profile-info">
-                    <p><span class="font-weight-bold">Name:</span> {{customer.full_name}}</p>
-                    <p><span class="font-weight-bold">Username:</span> {{customer.user.username}}</p>
-                    <p><span class="font-weight-bold">Email:</span> {{customer.user.email}}</p>
-                    <p><span class="font-weight-bold">Address:</span> {{customer.address}}</p>
-                    <p><span class="font-weight-bold">Joined on:</span> {{customer.joined_on}}</p>
+<!-- Profile Hero Section -->
+<div class="container-fluid px-0">
+    <div class="position-relative">
+        <div class="bg-primary text-white py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <h1 class="display-4 fw-bold mb-4">My Profile</h1>
+                        <p class="lead mb-4">Welcome back, {{ customer.full_name }}</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="profile-section">
-                <h3 class="text-info">Previous Orders</h3>
-                <hr>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>SN</th>
-                            <th>Order Id</th>
-                            <th>Amount</th>
-                            <th>Ordered on</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for ord in orders %}
-                        <tr>
-                            <td>{{forloop.counter}}</td>
-                            <td><a href="{% url 'ecomapp:customerorderdetail' ord.pk  %}">#ORDER_{{ord.id}}</a></td>
-                            <td>Rs. {{ord.total}}</td>
-                            <td>{{ord.created_at|timesince}} ago</td>
-                            <td>{{ord.order_status}}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Profile Information -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Profile Information</h3>
+                    <p><strong>Full Name:</strong> {{ customer.full_name }}</p>
+                    <p><strong>Username:</strong> {{ customer.user.username }}</p>
+                    <p><strong>Email:</strong> {{ customer.user.email }}</p>
+                    <p><strong>Address:</strong> {{ customer.address }}</p>
+                    <p><strong>Joined On:</strong> {{ customer.user.date_joined|date:"F d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Order History</h3>
+                    {% if orders %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>#{{ order.id }}</td>
+                                    <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                    <td>Rs. {{ order.total }}</td>
+                                    <td>
+                                        <span class="badge {% if order.order_status == 'Order Received' %}bg-primary{% elif order.order_status == 'Order Processing' %}bg-info{% elif order.order_status == 'Order Completed' %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {{ order.order_status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'ecomapp:customerorderdetail' order.id %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No orders found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

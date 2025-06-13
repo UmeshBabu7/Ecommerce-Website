@@ -11,6 +11,7 @@ from django.http import JsonResponse
 from .utils import password_reset_token
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.generic.edit import UpdateView, DeleteView
 
 # Create your views here.
 
@@ -23,6 +24,14 @@ class EcomMixin(object):
                 cart_obj.customer = request.user.customer
                 cart_obj.save()
         return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cart_id = self.request.session.get("cart_id")
+        if cart_id:
+            cart = Cart.objects.get(id=cart_id)
+            context['cart'] = cart
+        return context
 
 
 class HomeView(EcomMixin,TemplateView):
@@ -68,13 +77,13 @@ class AddToCartView(EcomMixin,TemplateView):
     def get_context_data(self,**kwargs):
         context=super().get_context_data(**kwargs)
 
-    # get product id from requested url
+        # get product id from requested url
         product_id=self.kwargs['pro_id']
 
-    # get product
+        # get product
         product_obj=Product.objects.get(id=product_id)
      
-    # check if cart exists
+        # check if cart exists
         cart_id = self.request.session.get("cart_id", None)
         if cart_id:
             cart_obj = Cart.objects.get(id=cart_id)
@@ -104,6 +113,7 @@ class AddToCartView(EcomMixin,TemplateView):
             cart_obj.total += product_obj.selling_price
             cart_obj.save()
 
+        context['cart'] = cart_obj
         return context
     
 class MyCartView(EcomMixin,TemplateView):
@@ -148,16 +158,24 @@ class ManageCartView(EcomMixin,View):
             cp_obj.delete()
         else:
             pass
+
+        # Update cart quantity in session
+        total_quantity = sum(cp.quantity for cp in cart_obj.cartproduct_set.all())
+        request.session['cart_total_quantity'] = total_quantity
+        request.session.modified = True
+        
         return redirect("ecomapp:mycart")
 
 class EmptyCartView(EcomMixin,View):
-      def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         cart_id = request.session.get("cart_id", None)
         if cart_id:
             cart = Cart.objects.get(id=cart_id)
             cart.cartproduct_set.all().delete()
             cart.total = 0
             cart.save()
+            request.session['cart_total_quantity'] = 0
+            request.session.modified = True
         return redirect("ecomapp:mycart")
       
 
@@ -515,6 +533,24 @@ class AdminProductCreateView(AdminRequiredMixin, CreateView):
         for i in images:
             ProductImage.objects.create(product=p, image=i)
         return super().form_valid(form)
+
+
+class AboutView(TemplateView):
+    template_name = "about.html"
+
+class ContactView(TemplateView):
+    template_name = "contact.html"
+
+class AdminProductUpdateView(AdminRequiredMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "adminpages/adminproductupdate.html"
+    success_url = reverse_lazy("ecomapp:adminproductlist")
+
+class AdminProductDeleteView(AdminRequiredMixin, DeleteView):
+    model = Product
+    template_name = "adminpages/adminproductdelete.html"
+    success_url = reverse_lazy("ecomapp:adminproductlist")
 
 
 

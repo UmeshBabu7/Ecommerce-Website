@@ -6,6 +6,8 @@ app_name='ecomapp'
 urlpatterns = [
      # client side pages
     path('',HomeView.as_view(),name="home"),
+    path("about/", AboutView.as_view(), name="about"),
+    path("contact/", ContactView.as_view(), name="contact"),
     path("all-products/", AllProductsView.as_view(), name="allproducts"),
     path("product/<slug:slug>/", ProductDetailView.as_view(), name="productdetail"),
     path("add-to-cart-<int:pro_id>/", AddToCartView.as_view(), name="addtocart"),
@@ -24,7 +26,7 @@ urlpatterns = [
      # payment method (khalti)
      path("khalti-request/", KhaltiRequestView.as_view(), name="khaltirequest"),
      # reset password
-    path("forgot-password/", PasswordForgotView.as_view(), name="passworforgot"),
+    path("forgot-password/", PasswordForgotView.as_view(), name="passwordforgot"),
      path("password-reset/<email>/<token>/",
          PasswordResetView.as_view(), name="passwordreset"),
 
@@ -44,6 +46,8 @@ urlpatterns = [
      # for admin product create form 
      path("admin-product/add/", AdminProductCreateView.as_view(),
          name="adminproductcreate"),
+    path("admin-product/update/<int:pk>/", AdminProductUpdateView.as_view(), name="adminproductupdate"),
+    path("admin-product/delete/<int:pk>/", AdminProductDeleteView.as_view(), name="adminproductdelete"),
 
 
 

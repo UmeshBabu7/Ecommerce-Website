@@ -1,113 +1,70 @@
-{% extends "base.html" %}
-
-{% block title %}Customer Login{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Login - MiniMart{% endblock %}
 
 {% block content %}
-<style>
-    body {
-        background-color: #f4f7fc;
-    }
-    .errorlist {
-        color: red;
-        font-size: 0.9rem;
-    }
-    .login-card {
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        background-color: white;
-    }
-    .card-body {
-        padding: 20px;
-    }
-    h3 {
-        text-align: center;
-        margin-bottom: 30px;
-        font-size: 1.8rem;
-        color: #1f7ed6;
-    }
-    .form-group {
-        margin-bottom: 20px;
-    }
-    .form-control {
-        height: 45px;
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        padding: 10px;
-        font-size: 1rem;
-    }
-    .btn {
-        border-radius: 30px;
-        padding: 12px;
-        font-size: 1.1rem;
-        text-transform: uppercase;
-        width: 100%;
-    }
-    .btn-info {
-        background-color: #1f7ed6;
-        border: none;
-        color: white;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    }
-    .btn-info:hover {
-        background-color: #155a8a;
-    }
-    .register-link {
-        color: #1f7ed6;
-        font-size: 1rem;
-    }
-    .register-link:hover {
-        text-decoration: underline;
-    }
-    .footer-text {
-        font-size: 0.9rem;
-        text-align: center;
-        margin-top: 20px;
-        color: #888;
-    }
-
-    /* Centering the form and controlling the size */
-    .form-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    .form-card {
-        width: 100%;
-        max-width: 500px; /* Set a maximum width for the form */
-    }
-</style>
-
-<div class="container-fluid form-wrapper">
-    <div class="card form-card">
-        <div class="card-body">
-            <h3 class="text-center text-info">Customer Login</h3>
-
-            <form action="" method="POST">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    {{ form.as_p }}
+<!-- Login Hero Section -->
+<div class="container-fluid px-0">
+    <div class="position-relative">
+        <div class="bg-primary text-white py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <h1 class="display-4 fw-bold mb-4">Welcome Back</h1>
+                        <p class="lead mb-4">Login to access your account and start shopping</p>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn btn-secondary mt-4">Login</button>
-
-                {% if error %}
-                <div class="errorlist mt-3">
-                    <p>{{ error }}</p>
-                </div>
-                {% endif %}
-            </form>
-        </div>
-        <div class="card-footer">
-            <p class="text-center mt-3 footer-text">Forgot Password?<a href="{% url 'ecomapp:passworforgot' %}">Reset now.</a></p>
-            <p class="text-center mt-3 footer-text">Or, don't have an account? 
-                <a href="{% url 'ecomapp:customerregistration' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" class="register-link">
-                    Register here
-                </a>
-            </p>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Login Form Section -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <h3 class="card-title text-center mb-4">Login to Your Account</h3>
+                    
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger mt-1">
+                                {{ field.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login
+                            </button>
+                        </div>
+
+                        {% if error %}
+                        <div class="alert alert-danger mt-3">
+                            {{ error }}
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+                <div class="card-footer bg-light p-4">
+                    <div class="text-center">
+                        <p class="mb-2">Forgot Password? <a href="{% url 'ecomapp:passwordforgot' %}" class="text-primary">Reset now</a></p>
+                        <p class="mb-0">Don't have an account? 
+                            <a href="{% url 'ecomapp:customerregistration' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" class="text-primary">
+                                Register here
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
