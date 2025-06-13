@@ -261,8 +261,19 @@ class CustomerRegistrationView(CreateView):
         username = form.cleaned_data.get("username")
         password = form.cleaned_data.get("password")
         email = form.cleaned_data.get("email")
+        full_name = form.cleaned_data.get("full_name")
+        address = form.cleaned_data.get("address")
+        
+        # Create User
         user = User.objects.create_user(username, email, password)
-        form.instance.user = user
+        
+        # Create Customer
+        Customer.objects.create(
+            user=user,
+            full_name=full_name,
+            address=address
+        )
+        
         login(self.request, user)
         return super().form_valid(form)
     
