@@ -34,7 +34,7 @@ This is a Django e-commerce website that provides a shopping platform for custom
 - **Payment Gateway**: Khalti API
 - **Email**: SMTP (Gmail) for password reset
 
-### Step 2: Clone the Repository
+### Step 1: Clone the Repository
 
 ```bash
 git clone https://github.com/UmeshBabu7/Ecommerce-Website.git
@@ -43,7 +43,7 @@ cd Ecommerce-Website
 
 If you don't have Git installed, download the project as a ZIP file and extract it.
 
-### Step 3: Install Dependencies
+### Step 2: Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -54,21 +54,21 @@ Or install manually:
 pip install django pillow requests django-crispy-forms crispy-bootstrap5
 ```
 
-### Step 4: Database Migration
+### Step 3: Database Migration
 
 ```bash
 cd website
 python manage.py migrate
 ```
 
-### Step 5: Create Superuser (Optional)
+### Step 4: Create Superuser (Optional)
 
 To access Django admin panel:
 ```bash
 python manage.py createsuperuser
 ```
 
-### Step 6: Run Development Server
+### Step 5: Run Development Server
 
 ```bash
 python manage.py runserver
