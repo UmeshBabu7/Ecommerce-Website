@@ -4,6 +4,7 @@ from .views import *
 app_name='ecomapp'
 
 urlpatterns = [
+
      # client side pages
     path('',HomeView.as_view(),name="home"),
     path("about/", AboutView.as_view(), name="about"),
@@ -30,9 +31,6 @@ urlpatterns = [
      path("password-reset/<email>/<token>/",
          PasswordResetView.as_view(), name="passwordreset"),
 
-
-
-
 # adminpages
     path("admin-login/", AdminLoginView.as_view(), name="adminlogin"),
     path("admin-home/", AdminHomeView.as_view(), name="adminhome"),
@@ -50,9 +48,5 @@ urlpatterns = [
     path("admin-product/delete/<int:pk>/", AdminProductDeleteView.as_view(), name="adminproductdelete"),
 
 
-
-
-
-   
 ]
 

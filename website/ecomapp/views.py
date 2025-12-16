@@ -281,19 +281,25 @@ class CustomerRegistrationView(CreateView):
         email = form.cleaned_data.get("email")
         full_name = form.cleaned_data.get("full_name")
         address = form.cleaned_data.get("address")
-        
+
         # Create User
-        user = User.objects.create_user(username, email, password)
-        
-        # Create Customer
+        user = User.objects.create_user(username=username, email=email, password=password)
+
+        # Create Customer linked to that User
         Customer.objects.create(
             user=user,
             full_name=full_name,
-            address=address
+            address=address,
         )
-        
+
+        # Log the user in
         login(self.request, user)
-        return super().form_valid(form)
+
+        # IMPORTANT:
+        # Do NOT call super().form_valid(form) because that would try to
+        # save a Customer instance from the ModelForm *without* a user,
+        # which causes the NOT NULL constraint error on customer.user_id.
+        return redirect(self.get_success_url())
     
     def get_success_url(self):
         if "next" in self.request.GET:
