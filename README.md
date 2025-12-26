@@ -2,7 +2,7 @@
 
 This is a Django e-commerce website that provides a shopping platform for customers and an admin panel for management and includes separate authentication for customers and admins, session-based cart management.
 
-## 🚀 Features
+## Features
 
 ### Customer Features
 - **User Authentication**: Customer registration, login, and logout
@@ -25,7 +25,7 @@ This is a Django e-commerce website that provides a shopping platform for custom
 - **Khalti Payment Gateway**: Integrated payment processing via Khalti
 - **Cash on Delivery**: Support for COD payment method
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Backend Framework**: Django
 - **Database**: SQLite
@@ -101,7 +101,7 @@ headers = {
 }
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Ecommerce-Website/
@@ -127,7 +127,7 @@ Ecommerce-Website/
 └── README.md            # Project documentation
 ```
 
-## 🎯 Key Models
+## Key Models
 
 - **Customer**: User profile with address and join date
 - **Admin**: Admin user profile with image and contact
@@ -137,7 +137,7 @@ Ecommerce-Website/
 - **CartProduct**: Individual items in cart
 - **Order**: Order details with status tracking
 
-## 🔐 User Roles
+## User Roles
 
 ### Customer
 - Register and login
@@ -154,7 +154,7 @@ Ecommerce-Website/
 - Update order status
 - View system statistics
 
-## 📱 Usage
+## Usage
 
 ### For Customers
 
@@ -173,7 +173,7 @@ Ecommerce-Website/
 3. **Manage Products**: Add, edit, or delete products
 4. **Manage Orders**: Update order status and view order details
 
-## 🔒 Security Features
+## Security Features
 
 - CSRF protection enabled
 - Password hashing
@@ -181,7 +181,7 @@ Ecommerce-Website/
 - Session-based cart management
 - Secure payment processing
 
-## 🌐 API Endpoints
+## Endpoints
 
 ### Customer Endpoints
 - `/` - Home page
