@@ -32,6 +32,7 @@ urlpatterns = [
          PasswordResetView.as_view(), name="passwordreset"),
 
 # adminpages
+    path("admin-register/", AdminRegistrationView.as_view(), name="adminregistration"),
     path("admin-login/", AdminLoginView.as_view(), name="adminlogin"),
     path("admin-home/", AdminHomeView.as_view(), name="adminhome"),
     path("admin-order/<int:pk>/", AdminOrderDetailView.as_view(),

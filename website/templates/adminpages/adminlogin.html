@@ -56,6 +56,11 @@
                 </div>
                 <div class="card-footer bg-light p-4">
                     <div class="text-center">
+                        <p class="mb-2">Don't have an admin account? 
+                            <a href="{% url 'ecomapp:adminregistration' %}" class="text-primary">
+                                Register here
+                            </a>
+                        </p>
                         <a href="{% url 'ecomapp:home' %}" class="text-decoration-none">
                             <i class="fas fa-arrow-left me-2"></i>Back to Main Site
                         </a>

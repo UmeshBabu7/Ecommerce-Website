@@ -448,6 +448,45 @@ class PasswordResetView(FormView):
 
 
 # Admin pages
+class AdminRegistrationView(CreateView):
+    template_name = "adminpages/adminregistration.html"
+    form_class = AdminRegistrationForm
+    success_url = reverse_lazy("ecomapp:adminhome")
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password")
+        email = form.cleaned_data.get("email")
+        full_name = form.cleaned_data.get("full_name")
+        mobile = form.cleaned_data.get("mobile")
+
+        # Create User
+        user = User.objects.create_user(username=username, email=email, password=password)
+
+        # Create Admin linked to that User
+        Admin.objects.create(
+            user=user,
+            full_name=full_name,
+            mobile=mobile,
+        )
+
+        # Log the user in
+        login(self.request, user)
+
+        # IMPORTANT:
+        # Do NOT call super().form_valid(form) because that would try to
+        # save an Admin instance from the ModelForm *without* a user,
+        # which causes the NOT NULL constraint error on admin.user_id.
+        return redirect(self.get_success_url())
+    
+    def get_success_url(self):
+        if "next" in self.request.GET:
+            next_url = self.request.GET.get("next")
+            return next_url
+        else:
+            return self.success_url
+
+
 class AdminLoginView(FormView):
     template_name = "adminpages/adminlogin.html"
     form_class = CustomerLoginForm

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order,Customer,Product
+from .models import Order,Customer,Product,Admin
 from django.contrib.auth.models import User
 
 class CheckoutForm(forms.ModelForm):
@@ -28,6 +28,43 @@ class CustomerRegistrationForm(forms.ModelForm):
 class CustomerLoginForm(forms.Form):
     username=forms.CharField(widget=forms.TextInput())
     password=forms.CharField(widget=forms.PasswordInput())
+
+
+class AdminRegistrationForm(forms.ModelForm):
+    username=forms.CharField(widget=forms.TextInput(attrs={
+        "class": "form-control",
+        "placeholder": "Enter username"
+    }))
+    password=forms.CharField(widget=forms.PasswordInput(attrs={
+        "class": "form-control",
+        "placeholder": "Enter password"
+    }))
+    email=forms.CharField(widget=forms.EmailInput(attrs={
+        "class": "form-control",
+        "placeholder": "Enter email"
+    }))
+
+    class Meta:
+        model=Admin
+        fields=['username','password','email','full_name','mobile']
+        widgets={
+            'full_name': forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "Enter full name"
+            }),
+            'mobile': forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "Enter mobile number"
+            }),
+        }
+
+    def clean_username(self):
+        uname=self.cleaned_data.get('username')
+        if User.objects.filter(username=uname).exists():
+            raise forms.ValidationError(
+                "Admin with this username already exists"
+            )
+        return uname
 
 
 class MultipleFileInput(forms.ClearableFileInput):
