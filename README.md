@@ -19,7 +19,7 @@ This is a Django e-commerce website that provides a shopping platform for custom
 - **Admin Dashboard**: Overview of pending orders and system statistics
 - **Product Management**: Create, read, update, and delete products
 - **Order Management**: View all orders, update order status, and manage order details
-- **Admin Authentication**: Secure admin login system
+- **Admin Authentication**: Secure admin register/login system
 
 ### Payment Integration
 - **Khalti Payment Gateway**: Integrated payment processing via Khalti
