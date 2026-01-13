@@ -1,4 +1,4 @@
-# Ecommerce Website - Django
+# Ecommerce Website
 
 This is a Django e-commerce website that provides a shopping platform for customers and an admin panel for management and includes separate authentication for customers and admins, session-based cart management.
 
